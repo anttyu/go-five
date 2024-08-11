@@ -25,7 +25,10 @@ func (t Training) distance() float64 {
 }
 
 func (t Training) meanSpeed() float64 {
-	return t.distance() / t.Duration.Seconds() * 3600 / 1000 // км/ч
+	if t.Duration.Seconds() == 0 {
+		return 0
+	}
+	return t.distance() / t.Duration.Hours() // км/ч
 }
 
 func (t Training) Calories() float64 {
@@ -79,7 +82,7 @@ func (r Running) Calories() float64 {
 }
 
 func (r Running) TrainingInfo() InfoMessage {
-	return Training.TrainingInfo(r.Training)
+	return r.Training.TrainingInfo()
 }
 
 const (
@@ -101,7 +104,7 @@ func (w Walking) Calories() float64 {
 }
 
 func (w Walking) TrainingInfo() InfoMessage {
-	return Training.TrainingInfo(w.Training)
+	return w.Training.TrainingInfo()
 }
 
 const (
@@ -117,6 +120,9 @@ type Swimming struct {
 }
 
 func (s Swimming) meanSpeed() float64 {
+	if s.Duration.Hours() == 0 {
+		return 0
+	}
 	return float64(s.LengthPool*s.CountPool) / MInKm / s.Duration.Hours()
 }
 
