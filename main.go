@@ -82,7 +82,13 @@ func (r Running) Calories() float64 {
 }
 
 func (r Running) TrainingInfo() InfoMessage {
-	return r.Training.TrainingInfo()
+	return InfoMessage{
+		TrainingType: r.TrainingType,
+		Duration:     r.Duration,
+		Distance:     r.distance(),
+		Speed:        r.meanSpeed(),
+		Calories:     r.Calories(),
+	}
 }
 
 const (
@@ -100,11 +106,17 @@ func (w Walking) Calories() float64 {
 	speedMsec := w.meanSpeed() * KmHInMsec
 	speedM := speedMsec * speedMsec
 	heightM := w.Height / CmInM
-	return (CaloriesWeightMultiplier*w.Weight + (speedM/heightM)*CaloriesSpeedHeightMultiplier*w.Weight) * w.Duration.Hours() * MinInHours
+	return ((CaloriesWeightMultiplier*w.Weight + (speedM/heightM)*CaloriesSpeedHeightMultiplier*w.Weight) * w.Duration.Hours() * MinInHours)
 }
 
 func (w Walking) TrainingInfo() InfoMessage {
-	return w.Training.TrainingInfo()
+	return InfoMessage{
+		TrainingType: w.TrainingType,
+		Duration:     w.Duration,
+		Distance:     w.distance(),
+		Speed:        w.meanSpeed(),
+		Calories:     w.Calories(),
+	}
 }
 
 const (
