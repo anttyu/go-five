@@ -82,13 +82,7 @@ func (r Running) Calories() float64 {
 }
 
 func (r Running) TrainingInfo() InfoMessage {
-	return InfoMessage{
-		TrainingType: r.TrainingType,
-		Duration:     r.Duration,
-		Distance:     r.distance(),
-		Speed:        r.meanSpeed(),
-		Calories:     r.Calories(),
-	}
+	return r.Training.TrainingInfo()
 }
 
 const (
@@ -110,13 +104,7 @@ func (w Walking) Calories() float64 {
 }
 
 func (w Walking) TrainingInfo() InfoMessage {
-	return InfoMessage{
-		TrainingType: w.TrainingType,
-		Duration:     w.Duration,
-		Distance:     w.distance(),
-		Speed:        w.meanSpeed(),
-		Calories:     w.Calories(),
-	}
+	return w.Training.TrainingInfo()
 }
 
 const (
@@ -153,8 +141,9 @@ func (s Swimming) TrainingInfo() InfoMessage {
 }
 
 func ReadData(training CaloriesCalculator) string {
-
+	calories := training.Calories()
 	info := training.TrainingInfo()
+	info.Calories = calories
 	return fmt.Sprint(info)
 }
 
